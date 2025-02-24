@@ -1,0 +1,41 @@
+data "aws_iam_role" "karpenter_role" {
+  name = "KarpenterRole-${var.cluster_name}" # Corrected interpolation syntax
+}
+
+data "aws_iam_role" "eks_node_role" {
+  name = "eks-node-group-nodes"
+}
+
+
+
+resource "kubectl_manifest" "aws_auth_configmap" {
+  yaml_body = <<YAML
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: ${data.aws_iam_role.karpenter_role.arn}
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+    - rolearn: ${data.aws_iam_role.eks_node_role.arn}
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+  mapUsers: |
+    []
+  mapAccounts: |
+    []
+YAML
+
+  depends_on = [
+    aws_iam_role.karpenter_role,  # Ensures IAM role exists
+    helm_release.karpenter        # Ensures Karpenter is installed
+  ]
+
+}

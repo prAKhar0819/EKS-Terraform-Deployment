@@ -1,0 +1,41 @@
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: web-provisioner
+  
+spec:
+  labels:
+    intent: apps
+  requirements:
+    - key: "node.kubernetes.io/instance-type"
+      operator: In
+      values: ["t3.medium"]
+    - key: "node.kubernetes.io/instance-family"
+      operator: NotIn
+      values: ["c5", "c6i", "r5", "r6i", "m5","t4g",  "g4dn", "inf1", "p3", "p4", "dl1"]  # Exclude all families except m5
+
+  limits:
+    resources:
+      cpu: 1000
+      memory: 1000Gi
+  ttlSecondsAfterEmpty: 30
+  ttlSecondsUntilExpired: 2592000
+  providerRef:
+    name: web-node-tem
+
+---
+
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+  name: web-node-tem
+spec:
+  subnetSelector:
+    karpenter.sh/discovery: demo
+  securityGroupSelector:
+    karpenter.sh/discovery: demo
+  instanceProfile: "KarpenterInstanceProfile-demo"
+  tags:
+    KarpenterProvisionerName: "web-provisioner"
+    NodeType: "web-nodes"
+    intent: "apps"

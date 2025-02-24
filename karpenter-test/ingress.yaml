@@ -1,0 +1,164 @@
+# # NOTE : it creates multiple ingress so make sure to dlt them
+
+# Ingress with ssl and 443 redirection
+
+# Web Ingress with TLS
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress
+  namespace: website
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/load-balancer-name: website-service-alb
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:593793065599:certificate/12cf70ca-b068-4735-998d-355ec5f320ae
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+
+        # Cert-Manager Annotations for Automatic SSL
+    # cert-manager.io/cluster-issuer: letsencrypt-prod  # Use your ClusterIssuer name
+    # acme.cert-manager.io/http01-edit-in-place: "true"
+
+spec:
+  ingressClassName: alb
+ 
+  rules:
+    - host: prakhar-devops.com  # Replace with your actual domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: website-service
+                port:
+                  number: 80
+          - path: /admin
+            pathType: Exact
+            backend:
+              service:
+                name: admin-service
+                port:
+                  number: 80
+
+
+
+
+
+# ************************************************************************************************************
+
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: api-ingress
+#   namespace: api
+#   annotations:
+    
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+#     alb.ingress.kubernetes.io/load-balancer-name: api-service-alb  # Ensure the same ALB is used
+    
+# spec:
+#   ingressClassName: alb
+#   rules:
+#     - http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: api-service
+#                 port:
+#                   number: 80
+        
+
+# ---
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: web-ingress
+#   namespace: web
+#   annotations:
+    
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+#     alb.ingress.kubernetes.io/load-balancer-name: website-service-alb # Ensure the same ALB is used
+    
+# spec:
+#   ingressClassName: alb
+#   rules:
+#     - http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: web-service
+#                 port:
+#                   number: 80
+#           - path: /admin
+#             pathType: Exact
+#             backend:
+#               service:
+#                 name: admin-service
+#                 port:
+#                   number: 80
+
+
+
+
+
+#************************************************************************************************************
+
+
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: web-ingress
+#   namespace: website
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+#     alb.ingress.kubernetes.io/load-balancer-name: website-service-alb
+#    # alb.ingress.kubernetes.io/ssl-redirect: "443"
+
+#     # Cert-Manager annotations for automatic SSL
+#     cert-manager.io/cluster-issuer: letsencrypt-prod
+#     acme.cert-manager.io/http01-edit-in-place: "true"
+    
+
+# spec:
+#   ingressClassName: alb
+#   tls:
+#     - hosts:
+#         - prakhar-devops.com  # Replace with your actual domain
+#       secretName: web-tls-secret  # Cert-Manager will generate this automatically
+#   rules:
+#     - host: prakhar-devops.com  # Replace with your actual domain
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: website-service
+#                 port:
+#                   number: 80
+#           - path: /admin
+#             pathType: Exact
+#             backend:
+#               service:
+#                 name: admin-service
+#                 port:
+#                   number: 80
+          
+# *************************************************************************************************************
