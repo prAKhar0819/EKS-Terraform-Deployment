@@ -41,14 +41,14 @@ resource "aws_ec2_tag" "subnet_role_tag" {
 
 # Fetch EKS Managed Node Group Details
 data "aws_eks_node_group" "private-nodes" {
-  depends_on = [module.eks, module.node_group]
+  depends_on = [module.eks, module.node]
   cluster_name    = var.cluster_name
   node_group_name = "private-nodes"
 }
 
 # Fetch Security Group of the Node Group
 data "aws_security_group" "eks_node_sg" {
-  depends_on = [module.eks, module.node_group]
+  depends_on = [module.eks, module.node]
    filter {
     name   = "tag:aws:eks:cluster-name"  # Tag key to search for
     values = [var.cluster_name]          # Make sure var.cluster_name = "demo"
@@ -57,7 +57,7 @@ data "aws_security_group" "eks_node_sg" {
 
 # Tag the EKS Managed Node Group Security Group
 resource "aws_ec2_tag" "eks_node_sg_tag" {
-  depends_on = [module.eks, module.node_group]
+  depends_on = [module.eks, module.node]
   resource_id = data.aws_security_group.eks_node_sg.id
   key         = "karpenter.sh/discovery"
   value       = var.cluster_name

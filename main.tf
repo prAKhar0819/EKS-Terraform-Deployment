@@ -1,7 +1,7 @@
 data "aws_iam_openid_connect_provider" "demo" {
   url = data.aws_eks_cluster.demo.identity[0].oidc[0].issuer
 
-  depends_on = [module.eks]
+  depends_on = [module.eks, aws_iam_openid_connect_provider.demo]
 }
 
 

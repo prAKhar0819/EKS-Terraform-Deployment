@@ -1,9 +1,11 @@
 data "aws_iam_role" "karpenter_role" {
   name = "KarpenterRole-${var.cluster_name}" # Corrected interpolation syntax
+  depends_on = [aws_iam_role.karpenter_role]
 }
 
 data "aws_iam_role" "eks_node_role" {
   name = "eks-node-group-nodes"
+  depends_on = [module.node]
 }
 
 
