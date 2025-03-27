@@ -9,7 +9,7 @@ resource "aws_eks_cluster" "demo" {
 }
 
 resource "aws_iam_role" "demo" {
-  name = "eks-cluster-demo"
+  name = "${var.cluster_name}-eks-cluster-role"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",

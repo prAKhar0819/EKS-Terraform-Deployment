@@ -6,7 +6,7 @@ data "aws_iam_role" "karpenter_role" {
 }
 
 data "aws_iam_role" "eks_node_role" {
-  name = "eks-node-group-nodes"
+  name = "${var.cluster_name}-eks-node-role"
   depends_on = [module.node]
 }
 

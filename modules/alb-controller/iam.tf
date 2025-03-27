@@ -1,7 +1,7 @@
 resource "aws_iam_policy" "kubernetes_alb_controller" {
   depends_on  = [var.mod_dependency]
   count       = var.enabled ? 1 : 0
-  name        = "${var.cluster_name}-alb-controller"
+  name        = "${var.cluster_name}-eks-alb-controller"
   path        = "/"
   description = "Policy for load balancer controller service"
 

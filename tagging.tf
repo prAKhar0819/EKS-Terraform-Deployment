@@ -43,7 +43,7 @@ resource "aws_ec2_tag" "subnet_role_tag" {
 data "aws_eks_node_group" "private-nodes" {
   depends_on = [module.eks, module.node]
   cluster_name    = var.cluster_name
-  node_group_name = "private-nodes"
+  node_group_name = "${var.cluster_name}-private-nodes"
 }
 
 # Fetch Security Group of the Node Group

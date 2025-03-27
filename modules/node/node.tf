@@ -1,7 +1,7 @@
 # role for nodegroup
 
 resource "aws_iam_role" "nodes" {
-  name = "eks-node-group-nodes"
+  name = "${var.cluster_name}-eks-node-role"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -60,7 +60,7 @@ resource "aws_iam_role_policy_attachment" "nodes-CloudWatchLogsFullAccess" {
 
 resource "aws_eks_node_group" "private-nodes" {
   cluster_name    = var.cluster_name
-  node_group_name = "private-nodes"
+  node_group_name = "${var.cluster_name}-private-nodes"
   node_role_arn   = aws_iam_role.nodes.arn
 
   subnet_ids = var.subnet_ids
