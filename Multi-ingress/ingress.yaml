@@ -1,16 +1,19 @@
+# hit alb_url/api/app1 , alb_url/api/app2
+
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: alb-ingress
   namespace: ingress-nginx
   annotations:
-    kubernetes.io/ingress.class: "alb"
     alb.ingress.kubernetes.io/scheme: "internet-facing"
     alb.ingress.kubernetes.io/target-type: "ip"
     alb.ingress.kubernetes.io/load-balancer-name: alb-ingress
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:593793065599:certificate/12cf70ca-b068-4735-998d-355ec5f320ae
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+  # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+  # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:593793065599:certificate/12cf70ca-b068-4735-998d-355ec5f320ae
+  # alb.ingress.kubernetes.io/ssl-redirect: "443"
 spec:
   ingressClassName: alb
   

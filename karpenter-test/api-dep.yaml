@@ -20,7 +20,7 @@ spec:
         #karpenter.sh/provisioner-name: api-provisioner
       containers:
       - name: nginx
-        image: prakhar0819/my-nginx:api
+        image: prakhar0819/temp-api
         imagePullPolicy: Always
         ports:
         - containerPort: 80

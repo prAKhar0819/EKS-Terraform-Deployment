@@ -8,7 +8,7 @@ spec:
   requirements:
     - key: "node.kubernetes.io/instance-type"
       operator: In
-      values: ["m5.large"]
+      values: ["t2.micro"]
     - key: "node.kubernetes.io/instance-family"
       operator: NotIn
       values: ["c5", "c6i", "r5", "r6i", "t3", "t4g",  "g4dn", "inf1", "p3", "p4", "dl1"]  # Exclude all families except m5

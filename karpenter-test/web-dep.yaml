@@ -16,12 +16,12 @@ spec:
         app: web
     spec:
       nodeSelector:
-        intent: apps  
+        intent: web  
         karpenter.sh/provisioner-name: web-provisioner
        
       containers:
       - name: nginx
-        image: prakhar0819/my-nginx:website
+        image: prakhar0819/temp-website
         imagePullPolicy: Always
         ports:
         - containerPort: 80

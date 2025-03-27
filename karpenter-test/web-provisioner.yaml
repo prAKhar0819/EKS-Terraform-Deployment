@@ -5,11 +5,11 @@ metadata:
   
 spec:
   labels:
-    intent: apps
+    intent: web
   requirements:
     - key: "node.kubernetes.io/instance-type"
       operator: In
-      values: ["t3.medium"]
+      values: ["t2.medium"]
     - key: "node.kubernetes.io/instance-family"
       operator: NotIn
       values: ["c5", "c6i", "r5", "r6i", "m5","t4g",  "g4dn", "inf1", "p3", "p4", "dl1"]  # Exclude all families except m5
@@ -38,4 +38,4 @@ spec:
   tags:
     KarpenterProvisionerName: "web-provisioner"
     NodeType: "web-nodes"
-    intent: "apps"
+    intent: "web"

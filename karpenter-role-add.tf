@@ -1,3 +1,5 @@
+# adding karpenter role to service account of karpenter
+
 data "aws_iam_role" "karpenter_role" {
   name = "KarpenterRole-${var.cluster_name}" # Corrected interpolation syntax
   depends_on = [aws_iam_role.karpenter_role]
