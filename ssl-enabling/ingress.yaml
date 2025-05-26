@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+
+  tls:
+  - hosts:
+    - empty-planet.com
+    secretName: empty-planet-tls  # cert-manager will create this
+
+  rules:
+  - host: empty-planet.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app0
+            port:
+              number: 80
+      - path: /app1
+        pathType: Prefix
+        backend:
+          service:
+            name: app1
+            port:
+              number: 80
+      - path: /app2
+        pathType: Prefix
+        backend:
+          service:
+            name: app2
+            port:
+              number: 80
+

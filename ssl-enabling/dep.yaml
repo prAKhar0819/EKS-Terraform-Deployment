@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app0
+  namespace: ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app0
+  template:
+    metadata:
+      labels:
+        app: app0
+    spec:
+      containers:
+      - name: app0
+        image: prakhar0819/k8s-testing:app0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app0
+  namespace: ingress
+spec:
+  selector:
+    app: app0
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  namespace: ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: app1
+        image: prakhar0819/k8s-testing:app1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1
+  namespace: ingress
+spec:
+  selector:
+    app: app1
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+
+
+
+
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+  namespace: ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - name: app2
+        image: prakhar0819/k8s-testing:app2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2
+  namespace: ingress
+spec:
+  selector:
+    app: app2
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+

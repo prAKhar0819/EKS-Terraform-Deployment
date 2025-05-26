@@ -273,3 +273,37 @@ resource "helm_release" "nginx_ingress" {
 
 }
 
+
+################## argocd installation ####################################3
+
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+}
+
+resource "helm_release" "argocd" {
+  name       = "argocd"
+  namespace  = kubernetes_namespace.argocd.metadata[0].name
+  repository = "https://argoproj.github.io/argo-helm"
+  depends_on = [kubernetes_namespace.argocd]
+  chart      = "argo-cd"
+  version    = "5.51.6" # specify version based on your compatibility needs
+
+  set {
+    name  = "server.service.type"
+    value = "NodePort"
+  }
+
+  set {
+    name  = "server.service.nodePortHttp"
+    value = "32080"
+  }
+
+  set {
+    name  = "server.service.nodePortHttps"
+    value = "32443"
+  }
+
+  # You can optionally enable ingress here if needed later
+}
